@@ -1,5 +1,11 @@
 #include "inputwin.h"
 #define ctl(w) ((w) & 0x1f)
+#define ctl2(x) ((x) & 0x1f)
+#include <stdio.h>
+#include <string.h>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
 
 inputwin::inputwin(WINDOW *win, int y, int x){
     textwin=win;
@@ -40,12 +46,17 @@ int inputwin::getmv(){
             condicion=wgetch(textwin);
             mvwaddch(textwin,locy,locx,condicion);
             locx++;
-        }while (condicion!=10);
+        }while (condicion!=10 || condicion==ctl2('x'));
         wattroff(textwin,A_REVERSE);
         mvwaddstr(textwin,auxlocy,auxlocx,"                                             ");
         locy=auxy;
         locx=auxx;
         wmove(textwin,locy,locx);
+        if(condicion==10){
+            std::string cadena,nueva;
+            mvwinnstr(textwin, locy, 2, const_cast<char*>(cadena.c_str()), locx);
+            reemplazar(cadena,"nueva");
+        }
         wrefresh(textwin);
     }else{
         if(locx==maxx-2){
@@ -60,5 +71,34 @@ int inputwin::getmv(){
 }
 
 void inputwin::typing(char caracter){
+    inputwin::boublelist.insertarFinal(caracter,false);
     mvwaddch(textwin,locy,locx,caracter);
+}
+
+void inputwin::reemplazar(std::string palabra,std::string nueva){
+    int tama=palabra.size();
+    int fin=nueva.size();
+    char p[nueva.size()];
+    char auxp=p[0];
+    std::string cadena=inputwin::boublelist.buscar(palabra);         //retorna una cadena con los n[umeros encontrados
+
+    std::vector<std::string> result;
+    size_t found;
+
+    std::string linea = cadena;
+    found = linea.find(",");
+    result.push_back(linea.substr(0,found));
+    result.push_back(linea.substr(found+1,linea.size()) );       // separa los n[umeros encontrados
+
+    for (int i = 0; i < result.size(); i++){                    // For para ir borrando las palabras encontradas
+
+        for (int var = std::stoi(result[i]); var < tama+1; ++var) {        // con los otros dos for de abajo
+            inputwin::boublelist.borrarEn(var);
+        }
+        for (int var = std::stoi(result[i]); var < fin+1; ++var) {
+            inputwin::boublelist.insertertarEn(tama,auxp,false);
+        }
+    }
+
+
 }
