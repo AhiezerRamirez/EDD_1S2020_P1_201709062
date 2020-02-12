@@ -37,6 +37,7 @@ public:
     void borrarFinal();
     void borrarEn(int pos);
     std::string buscar(std::string palabra);
+    void vaciar();
 };
 
 #endif // LISTADOBLE_H

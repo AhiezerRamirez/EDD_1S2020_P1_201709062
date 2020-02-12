@@ -31,6 +31,7 @@ public:
     void push(std::string palabrabuscar,std::string palabraReemplazar,bool estado,char palabra,int pos);
     NodoLog* pop();
     void toString();
+    bool esVacia();
     void vaciar();
 };
 

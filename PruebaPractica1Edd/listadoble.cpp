@@ -9,7 +9,7 @@ ListaDoble::ListaDoble()
 }
 ListaDoble::~ListaDoble(){
     Nodo *next;
-    while (next!=NULL) {
+    while (primero!=NULL) {
         next=primero->siguiente;
         delete primero;
         primero=next;
@@ -157,4 +157,9 @@ std::string ListaDoble::buscar(std::string palabra){
         temp=temp->siguiente;
     }
     return indices;
+}
+
+void ListaDoble::vaciar(){
+    this->primero=NULL;
+    this->ultimo=NULL;
 }

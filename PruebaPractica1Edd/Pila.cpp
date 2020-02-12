@@ -53,3 +53,9 @@ void Pila::vaciar(){
     }
     top=NULL;
 }
+bool Pila::esVacia(){
+    if(top==NULL)
+        return true;
+    else
+        return false;
+}
