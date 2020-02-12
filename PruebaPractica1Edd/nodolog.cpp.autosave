@@ -1,0 +1,11 @@
+#include "nodolog.h"
+#include <iostream>
+#include <string>
+
+NodoLog::NodoLog()
+{
+    public:
+    NodoLog *siguiente;
+    std::string palabraBuscar;
+    std::string palabraReemplazar
+}
