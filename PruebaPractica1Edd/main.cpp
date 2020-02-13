@@ -3,16 +3,18 @@
 #include "listasimpleordenada.h"
 #include "listacircular.h"
 #include "Pila.h"
+#include "inputwin.h"
 #include <estructura.h>
 #include <algorithm>
 #include <vector>
 #include <sstream>
 #include <fstream>
 #include <ncurses.h>
+#define ctl(x) ((x) & 0x1f)
 using namespace std;
 
 void pantallainput(){
-        Estructura *estruc=new Estructura();
+
         initscr();
         noecho();
         cbreak();
@@ -57,7 +59,7 @@ void pantallainput(){
         }
 
         if(opcions[highlited]=="1.Crear Archivo"){
-            estruc->abrirInput();
+            //estruc->abrirInput();
             /*while (in->getmv()!=ctl('x')) {
                 //in->typing(in->getmv());
                 wrefresh(textwin);
@@ -69,10 +71,82 @@ void pantallainput(){
 }
 
 int main()
-{
+{   Estructura *estruc=new Estructura();
+    initscr();
+        noecho();
+        cbreak();
+        WINDOW *menuwin=newwin(22,76,1,1);
+        box(menuwin,0,0);
+        refresh();
+        mvwprintw(menuwin,1,2,"Universidad de San Carlos de Guatemala");
+        mvwprintw(menuwin,2,2,"Facultad de Ingenieria");
+        mvwprintw(menuwin,3,2,"Estructura de Datos");
+        mvwprintw(menuwin,4,2,"Ahiezer Ramirez");
+        mvwprintw(menuwin,5,2,"201709062");
+        wrefresh(menuwin);
+        //it is to use de arrowkeys
+        keypad(menuwin,true);
 
-        pantallainput();
+        string opcions[4]={"1.Crear Archivo","2.Arbrir Archivo","3.Archivos Recientes","4.Salir"};
+        int opcion,highlited=0;
+        while(1){
+            box(menuwin,0,0);
+            refresh();
+            mvwprintw(menuwin,1,2,"Universidad de San Carlos de Guatemala");
+            mvwprintw(menuwin,2,2,"Facultad de Ingenieria");
+            mvwprintw(menuwin,3,2,"Estructura de Datos");
+            mvwprintw(menuwin,4,2,"Ahiezer Ramirez");
+            mvwprintw(menuwin,5,2,"201709062");
+            wrefresh(menuwin);
+            for (int var = 0; var < 4; ++var) {
+                if(var==highlited)
+                    wattron(menuwin,A_REVERSE);
+                mvwprintw(menuwin,var+16,30,opcions[var].c_str());
+                wattroff(menuwin,A_REVERSE);
+            }
+            opcion=wgetch(menuwin);
+            switch (opcion) {
+            case KEY_UP:
+                highlited--;
+                if(highlited==-1)
+                    highlited=0;
+                break;
+            case KEY_DOWN:
+                highlited++;
+                if(highlited==4)
+                    highlited=3;
+                break;
+            default:
+                break;
+            }
+            if(opcion==10){
+                if(opcions[highlited]=="1.Crear Archivo"){
+                    WINDOW *textwin=newwin(22,76,1,1);
+                    inputwin *in=new inputwin(textwin,2,2,estruc->caracterlista,estruc->reemplazolista,estruc->undo,estruc->redo);
+                    box(textwin,0,0);
 
+                    mvwhline(textwin,19,1,'-',139);
+                    mvwaddstr(textwin,20,1,"^w(Buscar y Reemplazar  ^c(Reportes)    ^s(Guardar)");
+                    wrefresh(textwin);
+                    while (in->getmv()!=ctl('x')) {
+                        //in->typing(in->getmv());
+                        wrefresh(textwin);
+                    }
+                    wclear(textwin);
+                    wrefresh(textwin);
+                    endwin();
+
+                }
+            }else if(opcion==ctl('x'))
+                break;
+
+        }
+
+
+        refresh();
+        getch();
+        endwin();
+    return 0;
 
     /*ListaSimpleOrdenada lista;
     lista.insertar("hola","","");

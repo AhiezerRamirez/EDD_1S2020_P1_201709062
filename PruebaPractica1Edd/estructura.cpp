@@ -1,16 +1,11 @@
 #include "estructura.h"
 
 Estructura::Estructura(){
+    this->archivoslista =new ListaCircular();
+    this->caracterlista =new ListaDoble();
+    this->redo=new Pila();
+    this->reemplazolista =new ListaSimpleOrdenada();
+    this->undo=new Pila();
 }
 
-void Estructura::abrirInput(){
-    initscr();
-    inputwin=newwin(22,76,1,1);
-    box(inputwin,0,0);
-    wrefresh(inputwin);
-    mvwhline(inputwin,30,1,'-',139);
-    mvwaddstr(inputwin,31,1,"^w(Buscar y Reemplazar  ^c(Reportes)    ^s(Guardar)");
-    int c=wgetch(inputwin);
-    getch();
-    endwin();
-}
+

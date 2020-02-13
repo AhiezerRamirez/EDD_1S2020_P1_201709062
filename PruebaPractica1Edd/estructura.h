@@ -14,11 +14,7 @@ public:
     ListaSimpleOrdenada *reemplazolista;
     ListaCircular *archivoslista;
     Pila *undo,*redo;
-    WINDOW *inputwin,*openwin,*filewin;
     Estructura();
-    void abrirInput();
-    void abrirOpen();
-    void abrirFile();
 };
 
 #endif // ESTRUCTURA_H
