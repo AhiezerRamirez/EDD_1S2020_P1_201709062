@@ -1,5 +1,8 @@
 #include "listadoble.h"
 #include <iostream>
+#include <fstream>
+#include <chrono>
+#include <thread>
 
 ListaDoble::ListaDoble()
 {
@@ -16,14 +19,36 @@ ListaDoble::~ListaDoble(){
     }
 }
 
+std::string ListaDoble::imprimirPantalla(){
+Nodo *temp=primero;
+std::string cadena;
+cadena="";
+while (temp!=NULL) {
+    cadena+=temp->letra;
+    temp=temp->siguiente;
+}
+return cadena;
+}
+
 std::string ListaDoble::toString(){
     Nodo *temp=primero;
     std::string cadena;
-    cadena = "";
-    while (temp!=NULL) {
-        cadena+=temp->letra;
+    int contador=0;
+    cadena = "digraph G {graph [rankdir=LR]; ";
+    while (temp->siguiente!=NULL) {
+        cadena+="\""+std::to_string(contador)+temp->letra+"\"->";
         temp=temp->siguiente;
+        contador++;
     }
+    cadena+="\""+std::to_string(contador)+temp->letra+"\"";
+    temp=ultimo;
+    while (temp->anterior!=NULL) {
+        cadena+="\""+std::to_string(contador)+temp->letra+"\"->";
+        temp=temp->anterior;
+        contador--;
+    }
+    cadena+="\""+std::to_string(contador)+temp->letra+"\"";
+    cadena+="}";
     return cadena;
 }
 void ListaDoble::insertarInicio(char caracter, bool espacio){
@@ -162,4 +187,27 @@ std::string ListaDoble::buscar(std::string palabra){
 void ListaDoble::vaciar(){
     this->primero=NULL;
     this->ultimo=NULL;
+}
+
+std::string ListaDoble::getPalabra(){
+    Nodo *temp=primero;
+    std::string palabra="";
+    while (temp!=NULL) {
+        palabra+=temp->letra;
+        temp=temp->siguiente;
+    }
+    return palabra;
+}
+
+void ListaDoble::imprimirDoble(){
+    std::string texto,ruta;
+    ruta="/home/ahiezer/Practica1Edd20/PruebaPractica1Edd/ListaDoble.dot";
+    texto=toString();
+    std::ofstream fileCitas;
+    fileCitas.open(ruta.c_str());
+    fileCitas<<texto;
+    fileCitas.close();
+    system("cd /home/ahiezer/Practica1Edd20/PruebaPractica1Edd/ && dot ListaDoble.dot -Tjpg -o ListaDoble.jpg");
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    system("xdg-open /home/ahiezer/Practica1Edd20/PruebaPractica1Edd/ListaDoble.jpg");
 }

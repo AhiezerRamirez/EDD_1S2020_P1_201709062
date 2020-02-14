@@ -121,17 +121,19 @@ int main()
             }
             if(opcion==10){
                 if(opcions[highlited]=="1.Crear Archivo"){
-                    WINDOW *textwin=newwin(22,76,1,1);
-                    inputwin *in=new inputwin(textwin,2,2,estruc->caracterlista,estruc->reemplazolista,estruc->undo,estruc->redo);
-                    box(textwin,0,0);
-
+                    WINDOW *textwin=newwin(22,76,0,0);
+                    noecho();
+                    inputwin *in=new inputwin(textwin,0,0,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo);
+                    //box(textwin,0,0);
+                    keypad(textwin,true);
                     mvwhline(textwin,19,1,'-',139);
-                    mvwaddstr(textwin,20,1,"^w(Buscar y Reemplazar  ^c(Reportes)    ^s(Guardar)");
+                    mvwaddstr(textwin,20,1,"^w(Buscar y Reemplazar  F4(Reportes)    F5(Guardar)");
                     wrefresh(textwin);
                     while (in->getmv()!=ctl('x')) {
                         //in->typing(in->getmv());
                         wrefresh(textwin);
                     }
+                    estruc->caracterlista->vaciar();
                     wclear(textwin);
                     wrefresh(textwin);
                     endwin();
@@ -198,7 +200,7 @@ int main()
     std::string palabra;
     palabra="van";
     cout << lista.buscar(palabra)<<endl;
-    std::string indices;
+    std::string indices;                                    //esto es para separar los indices
     indices=lista.buscar(palabra);
     std::replace(indices.begin(),indices.end(),';',' ');
     std::vector<int> v;

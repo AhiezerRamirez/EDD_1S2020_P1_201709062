@@ -6,17 +6,22 @@
 #include "Pila.h"
 #include <string>
 #include <string.h>
+#include <vector>
+#include <sstream>
+#include <iostream>
+
 class inputwin
 {
 public:
-    ListaDoble *listaD;
-    ListaSimpleOrdenada *listaO;
+    ListaDoble *listaD,*cadena;
+    ListaSimpleOrdenada *listaO,*listaO2;
     Pila *unDo,*reDo;
-    inputwin(WINDOW *win,int y, int x,ListaDoble *listad,ListaSimpleOrdenada *listao,Pila *undo,Pila *redo);
+    inputwin(WINDOW *win,int y, int x,ListaDoble *listad,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo);
     int getmv();
     void typing(char caracter);
-    void reemplazar(std::string palabra,std::string nueva);
-    ListaDoble boublelist;
+    void reemplazar(std::string palabra,std::string nuevapalabra);
+    std::vector<std::string> split(std::string strToSplit, char delimeter);
+    //ListaDoble boublelist;
 private:
     int locy,locx,maxy,maxx;
     char character;

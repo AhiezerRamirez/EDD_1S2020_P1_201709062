@@ -38,6 +38,9 @@ public:
     void borrarEn(int pos);
     std::string buscar(std::string palabra);
     void vaciar();
+    std::string getPalabra();
+    void imprimirDoble();
+    std::string imprimirPantalla();
 };
 
 #endif // LISTADOBLE_H

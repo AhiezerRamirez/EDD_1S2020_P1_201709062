@@ -30,7 +30,10 @@ public:
     NodoLog *top;
     void push(std::string palabrabuscar,std::string palabraReemplazar,bool estado,char palabra,int pos);
     NodoLog* pop();
-    void toString();
+    std::string toString();
+    std::string toString2();
+    void graficarUndo();
+    void graficarRedo();
     bool esVacia();
     void vaciar();
 };

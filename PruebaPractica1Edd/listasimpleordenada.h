@@ -4,12 +4,10 @@
 
 class NodoOrdenadas{
 public:
-    std::string encabezado;
     std::string reemplazadoPor;
     std::string reemplazoA;
     NodoOrdenadas *siguiente;
-    NodoOrdenadas(std::string encabezado,std::string reemplazadoPor,std::string reemplazoA){
-        this->encabezado=encabezado;
+    NodoOrdenadas(std::string reemplazadoPor,std::string reemplazoA){
         this->reemplazadoPor = reemplazadoPor;
         this->reemplazoA=reemplazoA;
         this->siguiente;
@@ -24,9 +22,12 @@ private:
 public:
     ListaSimpleOrdenada();
     int getSize();
-    void toString();
-    void insertar(std::string encabezado,std::string reemplazadoPor,std::string reemplazoA);
+    std::string toString();
+    std::string toString2();
+    void insertar(std::string reemplazadoPor,std::string reemplazoA);
     void vaciar();
+    void graficarBorradas();
+    void graficar2Reemplazadas();
 };
 
 #endif // LISTASIMPLEORDENADA_H
