@@ -1,5 +1,0 @@
-digraph G {node [shape = square]; 
- graph [rankdir=LR]; 
- node [color = red]; 
- node [style = filled];
-"0PalabraBuscada:NULL\n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:97\n Posicion:-73"}

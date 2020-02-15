@@ -123,7 +123,7 @@ int main()
                 if(opcions[highlited]=="1.Crear Archivo"){
                     WINDOW *textwin=newwin(22,76,0,0);
                     noecho();
-                    inputwin *in=new inputwin(textwin,0,0,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo);
+                    inputwin *in=new inputwin(textwin,0,0,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc);
                     //box(textwin,0,0);
                     keypad(textwin,true);
                     mvwhline(textwin,19,1,'-',139);
@@ -134,10 +134,34 @@ int main()
                         wrefresh(textwin);
                     }
                     estruc->caracterlista->vaciar();
+                    estruc->redo->vaciar();
+                    estruc->reemplazolista->vaciar();
+                    estruc->buscadolista->vaciar();
+                    estruc->undo->vaciar();
                     wclear(textwin);
                     wrefresh(textwin);
                     endwin();
 
+                }else if (opcions[highlited]=="2.Arbrir Archivo") {
+                    WINDOW *openwin=newwin(22,76,0,0);
+                    noecho();
+                    inputwin *in2= new inputwin(openwin,20,17,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc);
+                    keypad(openwin,true);
+                    mvwhline(openwin,19,1,'-',139);
+                    mvwaddstr(openwin,20,1,"Ruta del texto: ");
+                    wrefresh(openwin);
+                    while (in2->getmv()!=ctl('x')) {
+                        wrefresh(openwin);
+                    }
+                    estruc->caracterlista->vaciar();
+                    estruc->redo->vaciar();
+                    estruc->reemplazolista->vaciar();
+                    estruc->buscadolista->vaciar();
+                    estruc->undo->vaciar();
+                    wclear(openwin);
+                    estruc->archivoAbiero=false;
+                    wrefresh(openwin);
+                    endwin();
                 }
             }else if(opcion==ctl('x'))
                 break;

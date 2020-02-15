@@ -16,6 +16,7 @@ public:
     ListaCircular *archivoslista;
     Pila *undo,*redo;
     Estructura();
+    bool archivoAbiero;
     void imprimirDoble();
 };
 

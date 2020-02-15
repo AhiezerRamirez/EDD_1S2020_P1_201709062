@@ -7,6 +7,7 @@ Estructura::Estructura(){
     this->reemplazolista =new ListaSimpleOrdenada();
     this->undo=new Pila();
     this->buscadolista=new ListaSimpleOrdenada();
+    this->archivoAbiero=false;
 }
 
 void Estructura::imprimirDoble(){

@@ -4,6 +4,7 @@
 #include "listadoble.h"
 #include "listasimpleordenada.h"
 #include "Pila.h"
+#include "estructura.h"
 #include <string>
 #include <string.h>
 #include <vector>
@@ -13,10 +14,10 @@
 class inputwin
 {
 public:
-    ListaDoble *listaD,*cadena,*cadenaPaGuardar;
+    ListaDoble *listaD,*cadena,*cadenaPaGuardar,*listaPaAbrir;
     ListaSimpleOrdenada *listaO,*listaO2;
     Pila *unDo,*reDo;
-    inputwin(WINDOW *win,int y, int x,ListaDoble *listad,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo);
+    inputwin(WINDOW *win,int y, int x,ListaDoble *listad,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo,Estructura *estructura);
     int getmv();
     void typing(char caracter);
     void reemplazar(std::string palabra,std::string nuevapalabra);
@@ -25,6 +26,7 @@ public:
 private:
     int locy,locx,maxy,maxx;
     char character;
+    Estructura *estructura;
     WINDOW *textwin;
 
 };

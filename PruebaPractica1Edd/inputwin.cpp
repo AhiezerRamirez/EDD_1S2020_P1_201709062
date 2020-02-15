@@ -12,7 +12,7 @@
 #include <sstream>
 #include <fstream>
 
-inputwin::inputwin(WINDOW *win, int y, int x,ListaDoble *listaD,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo){
+inputwin::inputwin(WINDOW *win, int y, int x,ListaDoble *listaD,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo,Estructura *estructura){
     textwin=win;
     this->locy=y;
     this->locx=x;
@@ -22,12 +22,16 @@ inputwin::inputwin(WINDOW *win, int y, int x,ListaDoble *listaD,ListaSimpleOrden
     this->reDo=redo;
     this->cadena=new ListaDoble();
     this->cadenaPaGuardar=new ListaDoble();
+    this->listaPaAbrir=new ListaDoble();
     this->listaO2=listao2;
+    this->estructura=estructura;
     getmaxyx(textwin,maxy,maxx);
 }
 
 int inputwin::getmv(){
     noecho();
+    //locy=getcurx(textwin);
+    //locx=getcury(textwin);
     int choice=wgetch(textwin);
 
     if(choice==KEY_BACKSPACE){
@@ -185,26 +189,84 @@ int inputwin::getmv(){
             mvwaddstr(textwin,0,0,this->listaD->imprimirPantalla().c_str());
         wrefresh(textwin);
     }else if(choice==KEY_F(6)){
-        mvwaddstr(textwin,18,1,"Nombre:");
-        int seleccion=wgetch(textwin);
-        while (seleccion!=10) {
-            this->cadenaPaGuardar->insertarFinal(seleccion,false);
-        }
+        mvwaddstr(textwin,18,1,"Nombre: ");
+        wrefresh(textwin);
+        int auxx=locx;
+        int auxy=locy;
+        int selc=0;
+        locy=18;locx=9;
+        //selc=wgetch(textwin);
+        do{
+            selc=wgetch(textwin);
+            if(selc!=10){
+                this->cadenaPaGuardar->insertarFinal(selc,false);
+                mvwaddch(textwin,locy,locx,selc);
+                wrefresh(textwin);
+                locx++;
+            }
+        }while (selc!=10);
+
         this->listaD->guardarTXT(this->cadenaPaGuardar->imprimirPantalla());
+        mvwaddstr(textwin,18,1,"                                ");
+        wrefresh(textwin);
+        locy=auxy;locx=auxx;
+        wmove(textwin,locy,locx);
+        wrefresh(textwin);
+        this->cadenaPaGuardar->vaciar();
     }else if (choice==10) {
 
     }
     else{
-        if(locx==maxx-1){
-            locy++;
-            locx=0;
+        if(estructura->archivoAbiero==true){
+            if(locx==maxx-1){
+                locy++;
+                locx=0;
 
-        }else
+            }else
+                locx++;
+            mvwaddch(textwin,locy,locx,choice);
+            this->listaD->insertarFinal(choice,false);
+            this->unDo->push("NULL","NULL",false,choice,(locy+1)*73,false);
+            this->reDo->vaciar();
+        }else{
+            this->listaPaAbrir->vaciar();
+            //mvwaddch(textwin,locy,locx,choice);
+            //this->listaPaAbrir->insertarFinal(choice,false);
             locx++;
-        mvwaddch(textwin,locy,locx,choice);
-        this->listaD->insertarFinal(choice,false);
-        this->unDo->push("NULL","NULL",false,choice,(locy+1)*73,false);
-        this->reDo->vaciar();
+            int op;op=0;
+            //op=wgetch(textwin);
+            do{
+                op=wgetch(textwin);
+                if(op!=10){
+                    mvwaddch(textwin,locy,locx,op);
+                    this->listaPaAbrir->insertarFinal(op,false);
+                    locx++;
+                    wrefresh(textwin);
+                }
+
+            }while(op!=10);
+            if(op==10){
+                std::string ruta;
+                ruta = this->listaPaAbrir->imprimirPantalla();
+                std::ifstream myfile (ruta.c_str());
+                std::string texto="";
+                std::string textbody="";
+                myfile.open(ruta.c_str(),ios::in);
+                  if (myfile.is_open())
+                  {
+                    while ( getline (myfile,texto) )
+                    {
+                     textbody+=texto;
+                    }
+                    myfile.close();
+                  }
+                  waddstr(textwin,textbody.c_str());
+                  wrefresh(textwin);
+            }
+            mvwaddstr(textwin,20,1,"                                           ");
+            wrefresh(textwin);
+            estructura->archivoAbiero=true;
+        }
     }
 
     return choice;
