@@ -127,7 +127,7 @@ int main()
                     //box(textwin,0,0);
                     keypad(textwin,true);
                     mvwhline(textwin,19,1,'-',139);
-                    mvwaddstr(textwin,20,1,"^w(Buscar y Reemplazar  F4(Reportes)    F5(Guardar)");
+                    mvwaddstr(textwin,20,1,"^w(Buscar y Reemplazar  F4(Reportes)    F6(Guardar)");
                     wrefresh(textwin);
                     while (in->getmv()!=ctl('x')) {
                         //in->typing(in->getmv());

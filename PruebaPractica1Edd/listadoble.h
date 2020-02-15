@@ -21,11 +21,11 @@ public:
 
 class ListaDoble
 {
-private:
+
+public:
     Nodo *primero;
     Nodo *ultimo;
     int size;
-public:
     ListaDoble();
     ~ListaDoble();
     int getSize();
@@ -41,6 +41,7 @@ public:
     std::string getPalabra();
     void imprimirDoble();
     std::string imprimirPantalla();
+    void guardarTXT(std::string nombre);
 };
 
 #endif // LISTADOBLE_H

@@ -17,14 +17,19 @@ Pila::~Pila(){
     }
 }
 
-void Pila::push(std::string palabrabuscar, std::string palabraReemplazar, bool estado, char palabra, int pos){
-    NodoLog *n=new NodoLog(palabrabuscar,palabraReemplazar,estado,palabra,pos);
+void Pila::push(std::string palabrabuscar, std::string palabraReemplazar, bool estado, char palabra, int pos,bool borrado){
+    NodoLog *n=new NodoLog(palabrabuscar,palabraReemplazar,estado,palabra,pos,borrado);
     if(top==NULL){
         top=n;
     }else{
         n->siguiente=top;
         top=n;
     }
+}
+
+NodoLog* Pila::peek(){
+    if(top!=NULL)
+        return top;
 }
 
 NodoLog* Pila::pop(){

@@ -48,10 +48,10 @@ std::string ListaSimpleOrdenada::toString(){
     std::string cadena;
     cadena="digraph G {node [shape = square]; \n graph [rankdir=LR]; \n node [color = green]; \n node [style = filled];\n";
     while (temp->siguiente!=NULL) {
-        cadena+="\"["+temp->reemplazadoPor+"\\n ReemplazadoA"+temp->reemplazoA+"]\" ->";
+        cadena+="\"["+temp->reemplazadoPor+" \\n Reemplazado a: "+temp->reemplazoA+"]\" ->";
         temp=temp->siguiente;
     }
-    cadena+="\"["+temp->reemplazadoPor+"\\n ReemplazadoA"+temp->reemplazoA+"]\"";
+    cadena+="\"["+temp->reemplazadoPor+" \\n Reemplazado a: "+temp->reemplazoA+"]\"}";
     return cadena;
 }
 
@@ -60,10 +60,10 @@ std::string ListaSimpleOrdenada::toString2(){
     std::string cadena;
     cadena="digraph G {node [shape = square]; \n graph [rankdir=LR]; \n node [color = green]; \n node [style = filled];\n";
     while (temp->siguiente!=NULL) {
-        cadena+="\"["+temp->reemplazoA+"\\n ReemplazadoPor"+temp->reemplazadoPor+"]\" ->";
+        cadena+="\"["+temp->reemplazadoPor+" \\n Reemplazado por: "+temp->reemplazoA+"]\" ->";
         temp=temp->siguiente;
     }
-    cadena+="\"["+temp->reemplazoA+"\\n ReemplazadoA"+temp->reemplazadoPor+"]\"";
+    cadena+="\"["+temp->reemplazadoPor+" \\n Reemplazado por: "+temp->reemplazoA+"]\"}";
     return cadena;
 }
 

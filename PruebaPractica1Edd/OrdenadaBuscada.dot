@@ -1,0 +1,5 @@
+digraph G {node [shape = square]; 
+ graph [rankdir=LR]; 
+ node [color = green]; 
+ node [style = filled];
+"[chiva \n Reemplazado a: coso]" ->"[cuantes \n Reemplazado a: cuates]" ->"[esta \n Reemplazado a: este]" ->"[weyes \n Reemplazado a: majesssss]"}

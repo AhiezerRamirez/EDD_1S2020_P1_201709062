@@ -12,13 +12,15 @@ class NodoLog
     bool estado;
     char palabra;
     int pos;
-    NodoLog(std::string palabrabuscar,std::string palabraReemplazar,bool estado,char palabra,int pos){
+    bool borrado;
+    NodoLog(std::string palabrabuscar,std::string palabraReemplazar,bool estado,char palabra,int pos,bool borrado){
         this->palabraBuscar=palabrabuscar;
         this->palabraReemplazar=palabraReemplazar;
         this->estado=estado;
         this->palabra=palabra;
         this->pos=pos;
         this->siguiente=NULL;
+        this->borrado=borrado;
     }
 };
 
@@ -28,8 +30,9 @@ public:
     Pila();
     ~Pila();
     NodoLog *top;
-    void push(std::string palabrabuscar,std::string palabraReemplazar,bool estado,char palabra,int pos);
+    void push(std::string palabrabuscar,std::string palabraReemplazar,bool estado,char palabra,int pos,bool borrado);
     NodoLog* pop();
+    NodoLog* peek();
     std::string toString();
     std::string toString2();
     void graficarUndo();

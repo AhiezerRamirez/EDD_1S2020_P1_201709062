@@ -51,6 +51,10 @@ std::string ListaDoble::toString(){
     cadena+="}";
     return cadena;
 }
+
+int ListaDoble::getSize(){
+    return this->size;
+}
 void ListaDoble::insertarInicio(char caracter, bool espacio){
     Nodo *n=new Nodo(caracter,espacio);
     if(primero==NULL){
@@ -167,7 +171,7 @@ std::string ListaDoble::buscar(std::string palabra){
                 }else{
                     if(temp->letra==palabra[var]){
                         if(var==lenth-1){
-                            if(temp->siguiente==NULL||temp->siguiente->letra==' '){
+                            if(temp->siguiente==NULL||temp->siguiente->letra==' ' || temp->siguiente->letra=='\n' || temp->siguiente->letra==',' || temp->siguiente->letra=='.'){
                                 indices+=std::to_string(aux2contador)+";";
                                 break;
                             }
@@ -187,6 +191,7 @@ std::string ListaDoble::buscar(std::string palabra){
 void ListaDoble::vaciar(){
     this->primero=NULL;
     this->ultimo=NULL;
+    this->size=0;
 }
 
 std::string ListaDoble::getPalabra(){
@@ -210,4 +215,17 @@ void ListaDoble::imprimirDoble(){
     system("cd /home/ahiezer/Practica1Edd20/PruebaPractica1Edd/ && dot ListaDoble.dot -Tjpg -o ListaDoble.jpg");
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     system("xdg-open /home/ahiezer/Practica1Edd20/PruebaPractica1Edd/ListaDoble.jpg");
+}
+
+void ListaDoble::guardarTXT(std::string nombre){
+    std::string texto,ruta;
+    ruta="/home/ahiezer/Practica1Edd20/PruebaPractica1Edd/"+nombre+".txt";
+    texto=imprimirPantalla();
+    std::ofstream fileCitas;
+    fileCitas.open(ruta.c_str());
+    fileCitas<<texto;
+    fileCitas.close();
+    //system("cd /home/ahiezer/Practica1Edd20/PruebaPractica1Edd/ && dot ListaDoble.dot -Tjpg -o ListaDoble.jpg");
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    //system("xdg-open /home/ahiezer/Practica1Edd20/PruebaPractica1Edd/"+nombre.c_str()+".txt");
 }

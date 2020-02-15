@@ -2,4 +2,4 @@ digraph G {node [shape = square];
  graph [rankdir=LR]; 
  node [color = red]; 
  node [style = filled];
-"0PalabraBuscada:NULL \n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:102\n Posicion:146" ->"1PalabraBuscada:NULL \n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:117\n Posicion:146" ->"2PalabraBuscada:NULL \n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:110\n Posicion:146" ->"3PalabraBuscada:NULL \n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:99\n Posicion:146" ->"4PalabraBuscada:NULL \n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:105\n Posicion:146" ->"5PalabraBuscada:NULL \n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:111\n Posicion:146" ->"6PalabraBuscada:NULL \n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:110\n Posicion:146" ->"7PalabraBuscada:NULL\n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:97\n Posicion:146"}
+"0PalabraBuscada:NULL\n PalabraAReemplazar:NULL\n Revertido:1\n Palabra:97\n Posicion:-73"}

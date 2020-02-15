@@ -13,7 +13,7 @@
 class inputwin
 {
 public:
-    ListaDoble *listaD,*cadena;
+    ListaDoble *listaD,*cadena,*cadenaPaGuardar;
     ListaSimpleOrdenada *listaO,*listaO2;
     Pila *unDo,*reDo;
     inputwin(WINDOW *win,int y, int x,ListaDoble *listad,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo);

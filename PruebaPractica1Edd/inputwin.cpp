@@ -21,6 +21,7 @@ inputwin::inputwin(WINDOW *win, int y, int x,ListaDoble *listaD,ListaSimpleOrden
     this->unDo=undo;
     this->reDo=redo;
     this->cadena=new ListaDoble();
+    this->cadenaPaGuardar=new ListaDoble();
     this->listaO2=listao2;
     getmaxyx(textwin,maxy,maxx);
 }
@@ -34,41 +35,57 @@ int inputwin::getmv(){
             mvwaddch(textwin,locy,locx,' ');
             locx=maxx-1;
             locy--;
+            this->unDo->push("NULL","NULL",false,this->listaD->ultimo->letra,(locy*73)+locx,true);
             this->listaD->borrarFinal();
         }else if(locy==0 && locx==0){
             mvwaddch(textwin,locy,locx,' ');
+            this->unDo->push("NULL","NULL",false,this->listaD->ultimo->letra,(locy*73)+locx,true);
             this->listaD->borrarFinal();
         }else{
-            wmove(textwin,locy,locx);
+
             mvwaddch(textwin,locy,locx,' ');
             locx--;
+            wmove(textwin,locy,locx);
+            this->unDo->push("NULL","NULL",false,this->listaD->ultimo->letra,(locy*73)+locx,true);
             this->listaD->borrarFinal();
         }
     }else if(choice==KEY_F(2)){
         //mvwaddstr(textwin,20,1,"^w(Buscar y Reemplazar  ^c(Reportes)    ^s(Guardar)");
-        NodoLog *temp= this->unDo->pop();
-        if(temp->palabraBuscar=="NULL"){
-            this->listaD->borrarFinal();
-        }else{
-            reemplazar(temp->palabraReemplazar,temp->palabraBuscar);
-        }
-        this->reDo->push(temp->palabraBuscar,temp->palabraReemplazar,true,temp->palabra,temp->pos);
-        for (int var = 0; var < 75; ++var) {
-            for (int i = 2; i < 17; ++i) {
-                mvwaddch(textwin,i,var,' ');
+        if(!unDo->esVacia()){
+            NodoLog *temp= this->unDo->pop();
+            if(temp->palabraBuscar=="NULL"){
+                if(temp->borrado==false){
+                    this->listaD->borrarFinal();
+                }else{
+                    this->listaD->insertarFinal(temp->palabra,false);
+                }
+
+            }else{
+                reemplazar(temp->palabraReemplazar,temp->palabraBuscar);
+            }
+            this->reDo->push(temp->palabraBuscar,temp->palabraReemplazar,true,temp->palabra,temp->pos,temp->borrado);
+            for (int var = 0; var < 75; ++var) {
+                for (int i = 0; i < 17; ++i) {
+                    mvwaddch(textwin,i,var,' ');
+                }
             }
         }
-        mvwaddstr(textwin,2,2,this->listaD->imprimirPantalla().c_str());
+        mvwaddstr(textwin,0,0,this->listaD->imprimirPantalla().c_str());
         wrefresh(textwin);
         locy=getcury(textwin); locx=getcurx(textwin);
     }else if(choice==KEY_F(3)){
         if(!this->reDo->esVacia()){
             NodoLog *temp=this->reDo->pop();
-            this->unDo->push(temp->palabraBuscar,temp->palabraReemplazar,false,temp->palabra,temp->pos);
+            this->unDo->push(temp->palabraBuscar,temp->palabraReemplazar,false,temp->palabra,temp->pos,temp->borrado);
             if(temp->palabraBuscar=="NULL"){
-                this->listaD->insertarFinal(temp->palabra,false);
+                if(temp->borrado==false){
+                    this->listaD->insertarFinal(temp->palabra,false);
+                }else{
+                    this->listaD->borrarFinal();
+                }
+
             }else{
-                reemplazar(temp->palabraReemplazar,temp->palabraBuscar);
+                reemplazar(temp->palabraBuscar,temp->palabraReemplazar);
             }
             for (int var = 0; var < 75; ++var) {
                 for (int i = 0; i < 17; ++i) {
@@ -96,6 +113,8 @@ int inputwin::getmv(){
                 locx--;
                 mvwaddch(textwin,locy,locx,' ');
                 this->cadena->borrarFinal();
+            }else if(condicion==10){
+
             }else{
                 mvwaddch(textwin,locy,locx,condicion);
                 char caracter=(char)condicion;
@@ -104,7 +123,7 @@ int inputwin::getmv(){
             }
         }while (condicion!=10);
         wattroff(textwin,A_REVERSE);
-        mvwaddstr(textwin,18,2,"                                                            ");
+        mvwaddstr(textwin,18,2,"                                                                      ");
         locy=auxy;
         locx=auxx;
         wmove(textwin,locy,locx);
@@ -119,11 +138,11 @@ int inputwin::getmv(){
                 palabraNueva=v.at(1);
             }
             reemplazar(palabraBorrada,palabraNueva);
-            this->unDo->push(palabraBorrada,palabraNueva,false,' ',0);
             this->listaO->insertar(palabraBorrada,palabraNueva);
             this->listaO2->insertar(palabraNueva,palabraBorrada);
-            for (int var = 2; var < 73; ++var) {
-                for (int i = 2; i < 17; ++i) {
+            this->unDo->push(palabraBorrada,palabraNueva,false,' ',0,false);
+            for (int var = 0; var < 73; ++var) {
+                for (int i = 0; i < 17; ++i) {
                     mvwaddch(textwin,i,var,' ');
                 }
             }
@@ -134,22 +153,45 @@ int inputwin::getmv(){
 
         //wrefresh(textwin);
         //mvwaddstr(textwin,17,2,this->listaD->toString().c_str());
-        mvwaddstr(textwin,2,2,this->listaD->imprimirPantalla().c_str());
+        mvwaddstr(textwin,0,0,this->listaD->imprimirPantalla().c_str());
         wrefresh(textwin);
         locy=getcury(textwin); locx=getcurx(textwin);
     }else if(choice==KEY_F(4)){
         mvwaddstr(textwin,18,1,"REPORTES 1)Lista    2)Palabras Buscadas  3)Palabras Ordenadas");
         int seleccion=wgetch(textwin);
         if(seleccion=='1'){
-            this->listaD->imprimirDoble();
-            mvwaddstr(textwin,18,1,"                                                        ");
+            this->listaD->imprimirDoble();                  //Esta marranada es para graficar no para imprimir
+            mvwaddstr(textwin,18,1,"                                                           ");
             wrefresh(textwin);
         }else if (seleccion=='2') {
             this->unDo->graficarUndo();
             this->reDo->graficarRedo();
-            mvwaddstr(textwin,18,1,"                                                        ");
+            mvwaddstr(textwin,18,1,"                                                             ");
+            wrefresh(textwin);
+        }else if(seleccion=='3'){
+            this->listaO->graficarBorradas();
+            this->listaO2->graficar2Reemplazadas();
+            mvwaddstr(textwin,18,1,"                                                             ");
             wrefresh(textwin);
         }
+
+    }else if(choice==KEY_F(5)){
+        for (int var = 0; var < 75; ++var) {
+            for (int i = 0; i < 17; ++i) {
+                mvwaddch(textwin,i,var,' ');
+            }
+        }
+        if(this->listaD->getSize()!=0)
+            mvwaddstr(textwin,0,0,this->listaD->imprimirPantalla().c_str());
+        wrefresh(textwin);
+    }else if(choice==KEY_F(6)){
+        mvwaddstr(textwin,18,1,"Nombre:");
+        int seleccion=wgetch(textwin);
+        while (seleccion!=10) {
+            this->cadenaPaGuardar->insertarFinal(seleccion,false);
+        }
+        this->listaD->guardarTXT(this->cadenaPaGuardar->imprimirPantalla());
+    }else if (choice==10) {
 
     }
     else{
@@ -161,7 +203,7 @@ int inputwin::getmv(){
             locx++;
         mvwaddch(textwin,locy,locx,choice);
         this->listaD->insertarFinal(choice,false);
-        this->unDo->push("NULL","NULL",false,choice,(locy-1)*73);
+        this->unDo->push("NULL","NULL",false,choice,(locy+1)*73,false);
         this->reDo->vaciar();
     }
 
@@ -185,51 +227,56 @@ void inputwin::reemplazar(std::string palabra,std::string nuevapalabra){
     while (ss>>temp) {
         v.push_back(temp);
     }
-    for (int var = v.size()-1; var >= 0; var--) {
-        int aux=v.at(var);
-        this->listaD->borrarEn(aux);
-        //cout<<"lo de afuera "<<aux<<endl;
-        for (int i = aux+1; i < aux+palabra.size(); ++i) {
-            this->listaD->borrarEn(aux);
-            //cout<<"lo de adentro "<<i<<endl;
+    if(!v.empty()){
+        for (int var = v.size()-1; var >= 0; var--) {
+            if(!v.empty()){
+                int aux=v.at(var);
+                this->listaD->borrarEn(aux);
+                //cout<<"lo de afuera "<<aux<<endl;
+                for (int i = aux+1; i < aux+palabra.size(); ++i) {
+                    this->listaD->borrarEn(aux);
+                    //cout<<"lo de adentro "<<i<<endl;
+                }
+            }
+        }
+        //std::string nuevapalabra;
+        //nuevapalabra="ChicharronConPelos";
+        if(nuevapalabra.size()< palabra.size()){
+            int direfencia;
+            direfencia=palabra.size()-nuevapalabra.size();
+            for (int var = nuevapalabra.size()-1; var >= 0; var--) {
+                int aux=v.at(0);
+                this->listaD->insertertarEn(aux,nuevapalabra[var],false);
+            }
+            for (int var = 1; var < v.size(); ++var) {
+                int aux=v.at(var)-(direfencia*var);
+                for (int i = nuevapalabra.size()-1; i >= 0 ; i--) {
+                    this->listaD->insertertarEn(aux,nuevapalabra[i],false);
+                }
+            }
+        }else if(nuevapalabra.size()==palabra.size()){
+            for (int var = 0; var < v.size(); ++var) {
+                int aux=v.at(var);
+                for (int i = nuevapalabra.size()-1; i >=0 ; i--) {
+                    this->listaD->insertertarEn(aux,nuevapalabra[i],false);
+                }
+            }
+        }else if(nuevapalabra.size()>palabra.size()){
+            int diferenciainversa;
+            diferenciainversa=nuevapalabra.size()- palabra.size();
+            for (int var = nuevapalabra.size()-1; var >= 0; var--) {
+                int aux=v.at(0);
+                this->listaD->insertertarEn(aux,nuevapalabra[var],false);
+            }
+            for (int var = 1; var < v.size(); ++var) {
+                int aux=v.at(var)+(diferenciainversa*var);
+                for (int i = nuevapalabra.size()-1; i >= 0; i--) {
+                    this->listaD->insertertarEn(aux,nuevapalabra[i],false);
+                }
+            }
         }
     }
-    //std::string nuevapalabra;
-    //nuevapalabra="ChicharronConPelos";
-    if(nuevapalabra.size()< palabra.size()){
-        int direfencia;
-        direfencia=palabra.size()-nuevapalabra.size();
-        for (int var = nuevapalabra.size()-1; var >= 0; var--) {
-            int aux=v.at(0);
-            this->listaD->insertertarEn(aux,nuevapalabra[var],false);
-        }
-        for (int var = 1; var < v.size(); ++var) {
-            int aux=v.at(var)-(direfencia*var);
-            for (int i = nuevapalabra.size()-1; i >= 0 ; i--) {
-                this->listaD->insertertarEn(aux,nuevapalabra[i],false);
-            }
-        }
-    }else if(nuevapalabra.size()==palabra.size()){
-        for (int var = 0; var < v.size(); ++var) {
-            int aux=v.at(var);
-            for (int i = nuevapalabra.size()-1; i >=0 ; i--) {
-                this->listaD->insertertarEn(aux,nuevapalabra[i],false);
-            }
-        }
-    }else if(nuevapalabra.size()>palabra.size()){
-        int diferenciainversa;
-        diferenciainversa=nuevapalabra.size()- palabra.size();
-        for (int var = nuevapalabra.size()-1; var >= 0; var--) {
-            int aux=v.at(0);
-            this->listaD->insertertarEn(aux,nuevapalabra[var],false);
-        }
-        for (int var = 1; var < v.size(); ++var) {
-            int aux=v.at(var)+(diferenciainversa*var);
-            for (int i = nuevapalabra.size()-1; i >= 0; i--) {
-                this->listaD->insertertarEn(aux,nuevapalabra[i],false);
-            }
-        }
-    }
+    indices="";
     v.clear();
 }
 

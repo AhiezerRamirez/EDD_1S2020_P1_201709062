@@ -10,7 +10,7 @@ public:
     NodoOrdenadas(std::string reemplazadoPor,std::string reemplazoA){
         this->reemplazadoPor = reemplazadoPor;
         this->reemplazoA=reemplazoA;
-        this->siguiente;
+        this->siguiente=NULL;
     }
 };
 class ListaSimpleOrdenada
