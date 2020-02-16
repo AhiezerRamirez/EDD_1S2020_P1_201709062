@@ -17,8 +17,10 @@ public:
     ListaDoble *listaD,*cadena,*cadenaPaGuardar,*listaPaAbrir;
     ListaSimpleOrdenada *listaO,*listaO2;
     Pila *unDo,*reDo;
-    inputwin(WINDOW *win,int y, int x,ListaDoble *listad,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo,Estructura *estructura);
+    ListaCircular *listarutas;
+    inputwin(WINDOW *win,int y, int x,ListaDoble *listad,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo,Estructura *estructura,ListaCircular *listarutas);
     int getmv();
+    int getmv2();
     void typing(char caracter);
     void reemplazar(std::string palabra,std::string nuevapalabra);
     std::vector<std::string> split(std::string strToSplit, char delimeter);

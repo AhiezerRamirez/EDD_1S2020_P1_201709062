@@ -1,0 +1,5 @@
+digraph G {node [shape = square]; 
+ graph [rankdir=LR]; 
+ node [color = green]; 
+ node [style = filled];
+"[a.txt\n /home/ahiezer/a.txt]" ->"[b.txt\n /home/ahiezer/b.txt]" ->"[c.txt\n /home/ahiezer/c.txt]" ->"[a.txt\n /home/ahiezer/a.txt]"}

@@ -123,7 +123,7 @@ int main()
                 if(opcions[highlited]=="1.Crear Archivo"){
                     WINDOW *textwin=newwin(22,76,0,0);
                     noecho();
-                    inputwin *in=new inputwin(textwin,0,0,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc);
+                    inputwin *in=new inputwin(textwin,0,0,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc,estruc->archivoslista);
                     //box(textwin,0,0);
                     keypad(textwin,true);
                     mvwhline(textwin,19,1,'-',139);
@@ -145,10 +145,11 @@ int main()
                 }else if (opcions[highlited]=="2.Arbrir Archivo") {
                     WINDOW *openwin=newwin(22,76,0,0);
                     noecho();
-                    inputwin *in2= new inputwin(openwin,20,17,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc);
+                    inputwin *in2= new inputwin(openwin,18,17,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc,estruc->archivoslista);
                     keypad(openwin,true);
                     mvwhline(openwin,19,1,'-',139);
-                    mvwaddstr(openwin,20,1,"Ruta del texto: ");
+                    mvwaddstr(openwin,20,1,"^w(Buscar y Reemplazar  F4(Reportes)    F6(Guardar)");
+                    mvwaddstr(openwin,18,1,"Ruta del texto: ");
                     wrefresh(openwin);
                     while (in2->getmv()!=ctl('x')) {
                         wrefresh(openwin);
@@ -162,15 +163,48 @@ int main()
                     estruc->archivoAbiero=false;
                     wrefresh(openwin);
                     endwin();
+                }else if (opcions[highlited]=="3.Archivos Recientes") {
+                    WINDOW *filewin=newwin(22,76,0,0);
+                    noecho();
+                    inputwin *in3= new inputwin(filewin,18,17,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc,estruc->archivoslista);
+                    keypad(filewin,true);
+                    mvwhline(filewin,19,1,'-',139);
+                    mvwaddstr(filewin,20,1,"X.Generar Reporte de archivo");
+                    mvwaddstr(filewin,8,0,estruc->archivoslista->imprimirPantalla().c_str());
+                    mvwaddstr(filewin,1,20,"Archivos Recientes");
+                    wrefresh(filewin);
+                    while (in3->getmv2()!=ctl('x')) {
+                        wrefresh(filewin);
+                    }
+                    endwin();
+                }else if (opcions[highlited]=="4.Salir"){
+                    wclear(menuwin);
+                    int yy=0,xx=0;
+                    getmaxyx(menuwin,yy,xx);
+                    wattron(menuwin,A_REVERSE);
+                    mvwprintw(menuwin,yy/2,xx/2,"Good Bye");
+                    wattroff(menuwin,A_REVERSE);
+                    wrefresh(menuwin);
+                    getch();
+                    break;
                 }
-            }else if(opcion==ctl('x'))
+            }else if(opcion==ctl('x')){
+                wclear(menuwin);
+                int yy=0,xx=0;
+                getmaxyx(menuwin,yy,xx);
+                wattron(menuwin,A_REVERSE);
+                mvwprintw(menuwin,yy/2,xx/2,"Good Bye");
+                wattroff(menuwin,A_REVERSE);
+                wrefresh(menuwin);
+                wclear(menuwin);
+                getch();
                 break;
-
+            }
         }
 
 
-        refresh();
-        getch();
+        //refresh();
+        //getch();
         endwin();
     return 0;
 

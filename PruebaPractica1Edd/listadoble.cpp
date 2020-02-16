@@ -137,16 +137,18 @@ void ListaDoble::borrarEn(int pos){
 }
 
 void ListaDoble::borrarFinal(){
-    if(primero->siguiente==NULL){
-        delete primero;
-        primero=NULL;
-        ultimo=NULL;
-        size--;
-    }else if(primero!=NULL){
-        ultimo=ultimo->anterior;
-        delete ultimo->siguiente;
-        ultimo->siguiente=NULL;
-        size--;
+    if(primero!=NULL){
+        if(primero->siguiente==NULL){
+            delete primero;
+            primero=NULL;
+            ultimo=NULL;
+            size--;
+        }else if(primero!=NULL){
+            ultimo=ultimo->anterior;
+            delete ultimo->siguiente;
+            ultimo->siguiente=NULL;
+            size--;
+        }
     }
 }
 std::string ListaDoble::buscar(std::string palabra){

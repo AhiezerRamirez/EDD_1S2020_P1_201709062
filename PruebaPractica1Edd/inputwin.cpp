@@ -12,7 +12,7 @@
 #include <sstream>
 #include <fstream>
 
-inputwin::inputwin(WINDOW *win, int y, int x,ListaDoble *listaD,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo,Estructura *estructura){
+inputwin::inputwin(WINDOW *win, int y, int x,ListaDoble *listaD,ListaSimpleOrdenada *listao,ListaSimpleOrdenada *listao2,Pila *undo,Pila *redo,Estructura *estructura,ListaCircular *listarutas){
     textwin=win;
     this->locy=y;
     this->locx=x;
@@ -25,6 +25,7 @@ inputwin::inputwin(WINDOW *win, int y, int x,ListaDoble *listaD,ListaSimpleOrden
     this->listaPaAbrir=new ListaDoble();
     this->listaO2=listao2;
     this->estructura=estructura;
+    this->listarutas=listarutas;
     getmaxyx(textwin,maxy,maxx);
 }
 
@@ -232,44 +233,59 @@ int inputwin::getmv(){
             this->listaPaAbrir->vaciar();
             //mvwaddch(textwin,locy,locx,choice);
             //this->listaPaAbrir->insertarFinal(choice,false);
-            locx++;
+            //locx++;
             int op;op=0;
             //op=wgetch(textwin);
             do{
                 op=wgetch(textwin);
-                if(op!=10){
+                if(op!=KEY_ENTER){
                     mvwaddch(textwin,locy,locx,op);
                     this->listaPaAbrir->insertarFinal(op,false);
                     locx++;
                     wrefresh(textwin);
                 }
 
-            }while(op!=10);
+            }while(op!=10 );
             if(op==10){
-                std::string ruta;
+                std::string ruta="";
+                this->listaPaAbrir->borrarFinal();
                 ruta = this->listaPaAbrir->imprimirPantalla();
                 std::ifstream myfile (ruta.c_str());
-                std::string texto="";
-                std::string textbody="";
-                myfile.open(ruta.c_str(),ios::in);
+                wrefresh(textwin);
+                char eacChar;
+                //myfile.open(ruta.c_str());
                   if (myfile.is_open())
                   {
-                    while ( getline (myfile,texto) )
-                    {
-                     textbody+=texto;
-                    }
-                    myfile.close();
+                      while (!myfile.eof()) {
+                          myfile.get(eacChar);
+                          this->listaD->insertarFinal(eacChar,false);
+                      }
+                      if(!this->listarutas->existe(ruta.substr(ruta.find_last_of("/") + 1)))
+                        this->listarutas->insertar(ruta.substr(ruta.find_last_of("/") + 1),ruta);
+                      myfile.close();
                   }
-                  waddstr(textwin,textbody.c_str());
+                  this->listaD->borrarFinal();
+                  mvwaddstr(textwin,18,1,"                                           ");
+                  mvwaddstr(textwin,0,0,this->listaD->imprimirPantalla().c_str());
                   wrefresh(textwin);
+                  locy=getcury(textwin); locx=getcurx(textwin);
             }
-            mvwaddstr(textwin,20,1,"                                           ");
+
             wrefresh(textwin);
             estructura->archivoAbiero=true;
         }
     }
 
     return choice;
+}
+
+int inputwin::getmv2(){
+    int opcion;
+    opcion=wgetch(textwin);
+    if(opcion=='x'){
+        this->listarutas->graficarRutas();
+    }
+    return opcion;
 }
 
 void inputwin::typing(char caracter){

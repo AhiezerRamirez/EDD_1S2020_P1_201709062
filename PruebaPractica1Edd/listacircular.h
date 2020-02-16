@@ -24,7 +24,10 @@ public:
     ListaCircular();
     void insertar(std::string archivo,std::string ruta);
     std::string toString();
+    std::string imprimirPantalla();
     void vaciar();
+    void graficarRutas();
+    bool existe(std::string archivo);
 };
 
 #endif // LISTACIRCULAR_H
