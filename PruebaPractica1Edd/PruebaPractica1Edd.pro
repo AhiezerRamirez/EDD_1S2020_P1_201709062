@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     listasimplecircular.cpp \
     listasimpleordenada.cpp \
     listacircular.cpp \
-    inputwin.cpp
+    inputwin.cpp \
+    newinputwin.cpp
 
 HEADERS += \
     ../Practica1Edd20/listadoble.h \
@@ -22,7 +23,8 @@ HEADERS += \
     listacircular.h \
     /usr/include/ncursesw/ncurses.h \
     /usr/include/ncurses.h \
-    inputwin.h
+    inputwin.h \
+    newinputwin.h
 
 QMAKE_CXXFLAGS += -lncurses
 LIBS += -L/usr/include -lncurses

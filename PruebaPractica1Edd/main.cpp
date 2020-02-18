@@ -4,6 +4,7 @@
 #include "listacircular.h"
 #include "Pila.h"
 #include "inputwin.h"
+#include "newinputwin.h"
 #include <estructura.h>
 #include <algorithm>
 #include <vector>
@@ -123,13 +124,14 @@ int main()
                 if(opcions[highlited]=="1.Crear Archivo"){
                     WINDOW *textwin=newwin(22,76,0,0);
                     noecho();
-                    inputwin *in=new inputwin(textwin,0,0,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc,estruc->archivoslista);
+                    newinputwin *in2=new newinputwin(textwin,0,0,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc,estruc->archivoslista);
                     //box(textwin,0,0);
                     keypad(textwin,true);
                     mvwhline(textwin,19,1,'-',139);
                     mvwaddstr(textwin,20,1,"^w(Buscar y Reemplazar  F4(Reportes)    F6(Guardar)");
+
                     wrefresh(textwin);
-                    while (in->getmv()!=ctl('x')) {
+                    while (in2->getmv()!=ctl('x')) {
                         //in->typing(in->getmv());
                         wrefresh(textwin);
                     }
