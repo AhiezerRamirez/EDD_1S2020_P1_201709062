@@ -17,10 +17,11 @@ public:
 
 class ListaCircular
 {
+    public:
     NodoArchivo *primero;
     NodoArchivo *ultimo;
     int size;
-public:
+
     ListaCircular();
     void insertar(std::string archivo,std::string ruta);
     std::string toString();

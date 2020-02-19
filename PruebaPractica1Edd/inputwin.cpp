@@ -165,16 +165,21 @@ int inputwin::getmv(){
         mvwaddstr(textwin,18,1,"REPORTES 1)Lista    2)Palabras Buscadas  3)Palabras Ordenadas");
         int seleccion=wgetch(textwin);
         if(seleccion=='1'){
+            if(this->listaD->primero!=NULL)
             this->listaD->imprimirDoble();                  //Esta marranada es para graficar no para imprimir
             mvwaddstr(textwin,18,1,"                                                           ");
             wrefresh(textwin);
         }else if (seleccion=='2') {
+            if(!this->unDo->esVacia())
             this->unDo->graficarUndo();
+            if(!this->reDo->esVacia())
             this->reDo->graficarRedo();
             mvwaddstr(textwin,18,1,"                                                             ");
             wrefresh(textwin);
         }else if(seleccion=='3'){
+            if(this->listaO->primero!=NULL)
             this->listaO->graficarBorradas();
+            if(this->listaO2->primero!=NULL)
             this->listaO2->graficar2Reemplazadas();
             mvwaddstr(textwin,18,1,"                                                             ");
             wrefresh(textwin);

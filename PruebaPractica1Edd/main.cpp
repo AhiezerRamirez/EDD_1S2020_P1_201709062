@@ -166,19 +166,23 @@ int main()
                     wrefresh(openwin);
                     endwin();
                 }else if (opcions[highlited]=="3.Archivos Recientes") {
-                    WINDOW *filewin=newwin(22,76,0,0);
-                    noecho();
-                    inputwin *in3= new inputwin(filewin,18,17,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc,estruc->archivoslista);
-                    keypad(filewin,true);
-                    mvwhline(filewin,19,1,'-',139);
-                    mvwaddstr(filewin,20,1,"X.Generar Reporte de archivo");
-                    mvwaddstr(filewin,8,0,estruc->archivoslista->imprimirPantalla().c_str());
-                    mvwaddstr(filewin,1,20,"Archivos Recientes");
-                    wrefresh(filewin);
-                    while (in3->getmv2()!=ctl('x')) {
+                    if(estruc->archivoslista->primero==NULL){
+
+                    }else{
+                        WINDOW *filewin=newwin(22,76,0,0);
+                        noecho();
+                        inputwin *in3= new inputwin(filewin,18,17,estruc->caracterlista,estruc->buscadolista,estruc->reemplazolista,estruc->undo,estruc->redo,estruc,estruc->archivoslista);
+                        keypad(filewin,true);
+                        mvwhline(filewin,19,1,'-',139);
+                        mvwaddstr(filewin,20,1,"X.Generar Reporte de archivo");
+                        mvwaddstr(filewin,8,0,estruc->archivoslista->imprimirPantalla().c_str());
+                        mvwaddstr(filewin,1,20,"Archivos Recientes");
                         wrefresh(filewin);
+                        while (in3->getmv2()!=ctl('x')) {
+                            wrefresh(filewin);
+                        }
+                        endwin();
                     }
-                    endwin();
                 }else if (opcions[highlited]=="4.Salir"){
                     wclear(menuwin);
                     int yy=0,xx=0;

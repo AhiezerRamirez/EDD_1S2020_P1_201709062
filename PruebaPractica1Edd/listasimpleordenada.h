@@ -15,10 +15,7 @@ public:
 };
 class ListaSimpleOrdenada
 {
-private:
-    NodoOrdenadas *primero;
-    NodoOrdenadas *ultimo;
-    int size;
+
 public:
     ListaSimpleOrdenada();
     int getSize();
@@ -28,6 +25,9 @@ public:
     void vaciar();
     void graficarBorradas();
     void graficar2Reemplazadas();
+    NodoOrdenadas *primero;
+    NodoOrdenadas *ultimo;
+    int size;
 };
 
 #endif // LISTASIMPLEORDENADA_H
